@@ -1,6 +1,5 @@
 const api = {
   request: async (query, amount) => {
-    localStorage.clear()
     const api = new API({
       key: '1e19898c87464e239192c8bfe422f280'
     })
@@ -10,12 +9,26 @@ const api = {
     stream.pipe(dataProcessor.clean).catch(console.error)
   },
   details: async frabl => {
-    localStorage.clear()
     const api = new API({
       key: '1e19898c87464e239192c8bfe422f280'
     })
     const stream = await api.createStream('details/' + frabl)
     stream.pipe(console.log()).catch(console.error)
+  },
+  related: async (genre, author, amount) => {
+    const api = new API({
+      key: '1e19898c87464e239192c8bfe422f280'
+    })
+    const query
+    if (!genre || genre === 'Onbekend') {
+      query = author
+    } else {
+      query = genre
+    }
+    const stream = await api.createStream(
+      'search/' + query + '{' + amount + '}' + '&facet=type(book)'
+    )
+    stream.pipe(dataProcessor.clean).catch(console.error)
   }
 }
 
