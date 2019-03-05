@@ -1,11 +1,30 @@
-.topnav {
+.header {
+  overflow: hidden;
+  background-color: #f1f1f1;
+  padding: 20px 10px;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+.search {
+  padding-right: 5%;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  overflow-x: hidden;
+}
+
 .books {
   display: grid;
   grid-template-columns: 33% 33% 33%;
 }
 
 .books > div {
-  padding: 5%;
+  padding: 2%;
+  margin: 3%;
+  background-color: #f1f1f1;
 }
