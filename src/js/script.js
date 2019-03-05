@@ -1,5 +1,6 @@
 const api = {
   request: async (query, amount) => {
+    localStorage.clear()
     const api = new API({
       key: '1e19898c87464e239192c8bfe422f280'
     })
@@ -7,6 +8,14 @@ const api = {
       'search/' + query + '{' + amount + '}' + '&facet=type(book)'
     )
     stream.pipe(dataProcessor.clean).catch(console.error)
+  },
+  details: async frabl => {
+    localStorage.clear()
+    const api = new API({
+      key: '1e19898c87464e239192c8bfe422f280'
+    })
+    const stream = await api.createStream('details/' + frabl)
+    stream.pipe(console.log()).catch(console.error)
   }
 }
 
@@ -31,6 +40,8 @@ const dataProcessor = {
   createObject: data => {
     // format each object
     const object = {
+      id: data.id._attributes.nativeid,
+      frabl: data.frabl._text,
       author: data.authors
         ? data.authors['main-author']._text
         : 'Author not found',
@@ -46,6 +57,20 @@ const dataProcessor = {
   }
 }
 
+const router = {
+  initRoutes: () => {
+    routie('home', () => {
+      api.request('test', 15)
+    })
+    routie(':frabl', frabl => {
+      api.details(frabl)
+    })
+    routie('home')
+  }
+}
+
+router.initRoutes()
+
 const render = {
   drawList: data => {
     const markup = `
@@ -55,24 +80,9 @@ const render = {
         </h2>
         <p class="author">${data.author}</p>
         <p class="genre">${data.genre}</p>
-        <button>Details</button>
+        <a href="#${data.frabl}">Details</a>
      </div>
     `
     document.getElementsByClassName('books')[0].innerHTML += markup
-  },
-
-  drawDetails: data => {
-    const markup = `
-  <div class="book">
-     <h2>
-         ${data.title}
-     </h2>
-     <p class="author">${data.author}</p>
-     <p class="genre">${data.genre}</p>
-  </div>
- `
-    document.getElementsByClassName('books')[0].innerHTML = markup
   }
 }
-
-api.request('test', 15)
