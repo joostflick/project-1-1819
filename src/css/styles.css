@@ -1,4 +1,11 @@
-body {
+.topnav {
+  width: 100%;
+}
+.books {
   display: grid;
   grid-template-columns: 33% 33% 33%;
+}
+
+.books > div {
+  padding: 5%;
 }

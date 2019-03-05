@@ -10,6 +10,13 @@ const api = {
   }
 }
 
+document
+  .getElementById('searchButton')
+  .addEventListener('click', function(input) {
+    var input = document.getElementById('input').value
+    api.request(input, 15)
+  })
+
 const dataProcessor = {
   clean: data => {
     console.log(data)
@@ -17,7 +24,8 @@ const dataProcessor = {
     // const cleanedData = data.filter(object => object.genres != null)
     // make cleaned objects from data
     const cleanedObjects = data.map(data => dataProcessor.createObject(data))
-    // render books
+    // clean dom and render books
+    document.getElementsByClassName('books')[0].innerHTML = ''
     cleanedObjects.map(data => render.drawList(data))
   },
   createObject: data => {
@@ -30,7 +38,7 @@ const dataProcessor = {
         ? data.titles['short-title']._text
         : data.titles['short-title'][0]._text,
       genre: data.genres ? data.genres.genre._text : 'Onbekend',
-      coverImg: data.coverimages.coverimage[0]._text
+      coverImg: data.coverimages.coverimage[0]
         ? data.coverimages.coverimage[0]._text
         : 'notfound'
     }
@@ -47,10 +55,24 @@ const render = {
         </h2>
         <p class="author">${data.author}</p>
         <p class="genre">${data.genre}</p>
+        <button>Details</button>
      </div>
     `
-    document.body.innerHTML += markup
+    document.getElementsByClassName('books')[0].innerHTML += markup
+  },
+
+  drawDetails: data => {
+    const markup = `
+  <div class="book">
+     <h2>
+         ${data.title}
+     </h2>
+     <p class="author">${data.author}</p>
+     <p class="genre">${data.genre}</p>
+  </div>
+ `
+    document.getElementsByClassName('books')[0].innerHTML = markup
   }
 }
 
-api.request('ik', 30)
+api.request('test', 15)

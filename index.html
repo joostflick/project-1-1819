@@ -4,9 +4,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <script src="./node_modules/oba-wrapper/js/index.js" type="module"></script>
-    <script src="./src/js/script.js" type="module"></script>
     <link rel="stylesheet" href="./src/css/styles.css" />
     <title>Document</title>
   </head>
-  <body></body>
+  <body>
+    <div class="topnav">
+      <h1>Books</h1>
+      <div class="search">
+        <input id="input" type="search" placeholder="search..."></input>
+        <button id="searchButton" type="submit">go!</button>
+      </div>
+    </div>
+    <div class="books"></div>
+  </body>
+  <script src="./src/js/script.js" type="module"></script>
 </html>
