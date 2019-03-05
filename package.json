@@ -1,0 +1,25 @@
+{
+  "name": "project-1-1819",
+  "version": "1.0.0",
+  "description": "## Zoek in de de collectie van de OBA",
+  "main": "index.js",
+  "dependencies": {
+    "browserify": "^16.2.3",
+    "oba-wrapper": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify ./src/js/script.js > ./build/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joostflick/project-1-1819.git"
+  },
+  "author": "Joost Flick",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joostflick/project-1-1819/issues"
+  },
+  "homepage": "https://github.com/joostflick/project-1-1819#readme"
+}
