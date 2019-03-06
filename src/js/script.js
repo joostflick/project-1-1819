@@ -39,6 +39,8 @@ const request = {
 document
   .getElementById('searchButton')
   .addEventListener('click', function(input) {
+    document.getElementsByClassName('books')[0].innerHTML = ''
+    render.loading()
     var input = document.getElementById('input').value
     request.search(input, 15)
   })
@@ -84,27 +86,21 @@ const dataProcessor = {
   cleanBookData: data => {
     const cleanBook = dataProcessor.createObject(data.aquabrowser)
     request.related(cleanBook)
-    console.log(cleanBook)
     render.drawDetail(cleanBook)
   }
 }
-
-const router = {
-  initRoutes: () => {
-    routie('home', () => {
-      request.search('test', 15)
-    })
-    routie(':frabl', frabl => {
-      request.detail(frabl)
-    })
-    routie('home')
-  }
-}
-
-router.initRoutes()
 const favorites = []
 
 const render = {
+  loading: () => {
+    const markup = `
+    <div class="loading">
+    <h3> We are retrieving your books... </h3>
+    <h2> Did you know that de oba al teringlang bestaat? </h2>
+    </div>
+    `
+    document.getElementsByClassName('books')[0].innerHTML = markup
+  },
   drawDetail: data => {
     const markup = `
      <div id="detail">
@@ -115,10 +111,11 @@ const render = {
         <h2 class="author">${data.author}</h2>
         <p class="genre">${data.genre}</p>
         <p> You selected this book</p>
-        <button> Add to my reading list </button>
      </div>
     `
     document.getElementsByClassName('books')[0].innerHTML = markup
+    favorites.push(data.frabl)
+    console.log(favorites)
   },
   addToList: frabl => {
     favorites.push(frabl)
@@ -138,3 +135,20 @@ const render = {
     document.getElementsByClassName('books')[0].innerHTML += markup
   }
 }
+const router = {
+  initRoutes: () => {
+    routie('home', () => {
+      document.getElementsByClassName('books')[0].innerHTML = ''
+      render.loading()
+      request.search('test', 15)
+    })
+    routie(':frabl', frabl => {
+      document.getElementsByClassName('books')[0].innerHTML = ''
+      render.loading()
+      request.detail(frabl)
+    })
+    routie('home')
+  }
+}
+
+router.initRoutes()
