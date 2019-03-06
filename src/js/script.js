@@ -15,11 +15,13 @@ const request = {
     const data = await api.details(frabl)
     dataProcessor.cleanBookData(data)
   },
-  related: async (genre, author, amount) => {
+  related: async book => {
+    console.log(book)
     const api = new API({
       key: '1e19898c87464e239192c8bfe422f280'
     })
-    const query = ''
+    const genre = book.genre
+    const author = book.author
     if (!genre || genre === 'Onbekend') {
       query = author
     } else {
@@ -59,8 +61,9 @@ const dataProcessor = {
         ? data.authors['main-author']._text
         : 'Author not found',
       title: !data.titles['short-title']
-        ? data.titles['short-title']
-        : data.titles['short-title']._text,
+        ? 'geen titel'
+        : data.titles['short-title']._text ||
+          data.titles['short-title'][0]._text,
       genre: data.genres ? data.genres.genre._text : 'Onbekend',
       coverImg: data.coverimages.coverimage[0]
         ? data.coverimages.coverimage[0]._text
@@ -91,8 +94,9 @@ router.initRoutes()
 
 const render = {
   drawDetail: data => {
+    request.related(data)
     const markup = `
-     <div class="book">
+     <div class="detail">
         <h1>
             ${data.title}
         </h1>
