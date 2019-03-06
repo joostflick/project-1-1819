@@ -16,21 +16,23 @@ const request = {
     dataProcessor.cleanBookData(data)
   },
   related: async book => {
-    console.log(book)
     const api = new API({
       key: '1e19898c87464e239192c8bfe422f280'
     })
-    const genre = book.genre
+    console.log(book)
     const author = book.author
-    if (!genre || genre === 'Onbekend') {
+    const genre = book.genre
+    let query = ''
+    if (!genre || genre === 'Unknown') {
       query = author
     } else {
       query = genre
     }
+    const amount = 5
     const stream = await api.createStream(
       'search/' + query + '{' + amount + '}' + '&facet=type(book)'
     )
-    stream.pipe(dataProcessor.clean).catch(console.error)
+    stream.pipe(dataProcessor.related).catch(console.error)
   }
 }
 
@@ -52,6 +54,11 @@ const dataProcessor = {
     document.getElementsByClassName('books')[0].innerHTML = ''
     cleanedObjects.map(data => render.drawList(data))
   },
+  related: data => {
+    const cleanedObjects = data.map(data => dataProcessor.createObject(data))
+    // clean dom and render books
+    cleanedObjects.map(data => render.drawList(data))
+  },
   createObject: data => {
     // format each object
     const object = {
@@ -61,18 +68,22 @@ const dataProcessor = {
         ? data.authors['main-author']._text
         : 'Author not found',
       title: !data.titles['short-title']
-        ? 'geen titel'
+        ? 'No title'
         : data.titles['short-title']._text ||
           data.titles['short-title'][0]._text,
-      genre: data.genres ? data.genres.genre._text : 'Onbekend',
+      genre:
+        data.genres && data.genres.genre && data.genres.genre._text
+          ? data.genres.genre._text
+          : 'Unknown',
       coverImg: data.coverimages.coverimage[0]
         ? data.coverimages.coverimage[0]._text
-        : 'notfound'
+        : 'No image'
     }
     return object
   },
   cleanBookData: data => {
     const cleanBook = dataProcessor.createObject(data.aquabrowser)
+    request.related(cleanBook)
     console.log(cleanBook)
     render.drawDetail(cleanBook)
   }
@@ -91,22 +102,27 @@ const router = {
 }
 
 router.initRoutes()
+const favorites = []
 
 const render = {
   drawDetail: data => {
-    request.related(data)
     const markup = `
-     <div class="detail">
+     <div id="detail">
         <h1>
             ${data.title}
         </h1>
         <img src="${data.coverImg}"></img>
         <h2 class="author">${data.author}</h2>
         <p class="genre">${data.genre}</p>
-        <p> See related books: </p>
+        <p> You selected this book</p>
+        <button> Add to my reading list </button>
      </div>
     `
     document.getElementsByClassName('books')[0].innerHTML = markup
+  },
+  addToList: frabl => {
+    favorites.push(frabl)
+    console.log(favorites)
   },
   drawList: data => {
     const markup = `
@@ -116,7 +132,7 @@ const render = {
         </h2>
         <p class="author">${data.author}</p>
         <p class="genre">${data.genre}</p>
-        <a href="#${data.frabl}">Details</a>
+        <a href="#${data.frabl}">See related</a>
      </div>
     `
     document.getElementsByClassName('books')[0].innerHTML += markup

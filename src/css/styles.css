@@ -1,6 +1,6 @@
 .header {
   overflow: hidden;
-  background-color: #f1f1f1;
+  background-color: #aa3939;
   padding: 20px 10px;
   width: 100%;
   display: flex;
@@ -8,8 +8,14 @@
   align-items: center;
 }
 
+h1 > a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.5em;
+}
+
 .search {
-  padding-right: 5%;
+  padding-right: 10%;
 }
 
 body {
@@ -26,5 +32,41 @@ body {
 .books > div {
   padding: 2%;
   margin: 3%;
-  background-color: #f1f1f1;
+  background-color: #d46a6a;
+  border: 3px solid #aa3939;
+  border-radius: 5px;
+}
+
+.searchTerm {
+  font-size: 1.2em;
+  float: left;
+  width: 100%;
+  border: 3px solid #d46a6a;
+  padding: 5px;
+  height: 40px;
+  border-radius: 5px;
+  outline: none;
+  color: #9dbfaf;
+}
+
+.searchTerm:focus {
+  color: #aa3939;
+}
+
+#searchButton {
+  position: absolute;
+  margin-left: -8px;
+  height: 40px;
+  border: 3px solid #d46a6a;
+  background: white;
+  text-align: center;
+  color: #aa3939;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+#detail {
+  background-color: 801515 !important;
+  color: white;
 }
