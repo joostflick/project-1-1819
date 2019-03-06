@@ -4,8 +4,7 @@
   "description": "## Zoek in de de collectie van de OBA",
   "main": "index.js",
   "dependencies": {
-    "browserify": "^16.2.3",
-    "oba-wrapper": "^1.0.0"
+    "oba-wrapper": "github:maanlamp/OBA-wrapper"
   },
   "devDependencies": {},
   "scripts": {

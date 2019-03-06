@@ -1,5 +1,5 @@
-const api = {
-  request: async (query, amount) => {
+const request = {
+  search: async (query, amount) => {
     const api = new API({
       key: '1e19898c87464e239192c8bfe422f280'
     })
@@ -8,18 +8,18 @@ const api = {
     )
     stream.pipe(dataProcessor.clean).catch(console.error)
   },
-  details: async frabl => {
+  detail: async frabl => {
     const api = new API({
       key: '1e19898c87464e239192c8bfe422f280'
     })
-    const stream = await api.createStream('details/' + frabl)
-    stream.pipe(console.log()).catch(console.error)
+    const data = await api.details(frabl)
+    dataProcessor.cleanBookData(data)
   },
   related: async (genre, author, amount) => {
     const api = new API({
       key: '1e19898c87464e239192c8bfe422f280'
     })
-    const query
+    const query = ''
     if (!genre || genre === 'Onbekend') {
       query = author
     } else {
@@ -36,7 +36,7 @@ document
   .getElementById('searchButton')
   .addEventListener('click', function(input) {
     var input = document.getElementById('input').value
-    api.request(input, 15)
+    request.search(input, 15)
   })
 
 const dataProcessor = {
@@ -58,25 +58,30 @@ const dataProcessor = {
       author: data.authors
         ? data.authors['main-author']._text
         : 'Author not found',
-      title: data.titles['short-title']._text
-        ? data.titles['short-title']._text
-        : data.titles['short-title'][0]._text,
+      title: !data.titles['short-title']
+        ? data.titles['short-title']
+        : data.titles['short-title']._text,
       genre: data.genres ? data.genres.genre._text : 'Onbekend',
       coverImg: data.coverimages.coverimage[0]
         ? data.coverimages.coverimage[0]._text
         : 'notfound'
     }
     return object
+  },
+  cleanBookData: data => {
+    const cleanBook = dataProcessor.createObject(data.aquabrowser)
+    console.log(cleanBook)
+    render.drawDetail(cleanBook)
   }
 }
 
 const router = {
   initRoutes: () => {
     routie('home', () => {
-      api.request('test', 15)
+      request.search('test', 15)
     })
     routie(':frabl', frabl => {
-      api.details(frabl)
+      request.detail(frabl)
     })
     routie('home')
   }
@@ -85,6 +90,20 @@ const router = {
 router.initRoutes()
 
 const render = {
+  drawDetail: data => {
+    const markup = `
+     <div class="book">
+        <h1>
+            ${data.title}
+        </h1>
+        <img src="${data.coverImg}"></img>
+        <h2 class="author">${data.author}</h2>
+        <p class="genre">${data.genre}</p>
+        <p> See related books: </p>
+     </div>
+    `
+    document.getElementsByClassName('books')[0].innerHTML = markup
+  },
   drawList: data => {
     const markup = `
      <div class="book">
