@@ -6,6 +6,8 @@ Suggesties voor andere boeken wanneer een boek bekeken wordt.
 
 ## TO DO
 
-- perceived performance (loading state)
-- visited list
--
+[x] Show related books
+[x] Search for books
+[x] Perceived performance (loading state)
+[] Visited list
+[] Better data cleaning
