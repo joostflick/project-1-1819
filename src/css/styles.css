@@ -77,6 +77,10 @@ body {
   color: white;
 }
 
+#detail > img {
+  max-width: 80%;
+}
+
 .loading {
   grid-column: 1/4;
   display: flex;

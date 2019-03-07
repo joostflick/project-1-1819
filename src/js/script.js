@@ -1,3 +1,11 @@
+function findLongestWord(str) {
+  const stringArray = str.split(' ')
+  const orderedArray = stringArray.sort((a, b) => {
+    return a.length < b.length
+  })
+  return orderedArray[0]
+}
+
 const request = {
   search: async (query, amount) => {
     const api = new API({
@@ -22,13 +30,15 @@ const request = {
     console.log(book)
     const author = book.author
     const genre = book.genre
+    const searchWord = findLongestWord(book.title)
     let query = ''
-    if (!genre || genre === 'Unknown') {
-      query = author
+    if (!genre || genre === 'Genre onbekend') {
+      query = searchWord
     } else {
       query = genre
     }
     const amount = 5
+    console.log(query)
     const stream = await api.createStream(
       'search/' + query + '{' + amount + '}' + '&facet=type(book)'
     )
@@ -65,23 +75,26 @@ const dataProcessor = {
   createObject: data => {
     // format each object
     const object = {
-      id: data.id._attributes.nativeid,
-      frabl: data.frabl._text,
+      frabl: data.frabl ? data.frabl._text : '1F603CA720F360A0',
       author: data.authors
         ? data.authors['main-author']._text
         : 'Auteur onbekend',
-      title:
-        !data.titles || !data.titles['short-title']
-          ? 'Titel onbekend'
-          : data.titles['short-title']._text ||
-            data.titles['short-title'][0]._text,
+      title: data.titles
+        ? data.titles['short-title']
+          ? data.titles['short-title']._text
+          : data.titles.title
+          ? data.titles.title._text
+          : 'Titel onbekend'
+        : 'Titel onbekend',
+
       genre:
         data.genres && data.genres.genre && data.genres.genre._text
           ? data.genres.genre._text
           : 'Genre onbekend',
-      coverImg: data.coverimages.coverimage[0]
-        ? data.coverimages.coverimage[0]._text
-        : 'Geen afbeelding'
+      coverImg:
+        data.coverimages && data.coverimages.coverimage[0]
+          ? data.coverimages.coverimage[0]._text
+          : 'https://www.freeiconspng.com/uploads/no-image-icon-6.png'
     }
     return object
   },
