@@ -72,6 +72,14 @@ body {
   font-size: 20px;
 }
 
+#relatedLoading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 #detail {
   background-color: 801515 !important;
   color: white;

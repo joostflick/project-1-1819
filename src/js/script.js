@@ -77,6 +77,8 @@ const dataProcessor = {
     console.log(data)
     const cleanedObjects = data.map(data => dataProcessor.createObject(data))
     // clean dom and render books
+    let loader = document.getElementById('relatedLoading')
+    loader.parentNode.removeChild(loader)
     cleanedObjects.map(data => render.drawList(data))
   },
   createObject: data => {
@@ -160,6 +162,9 @@ const render = {
         <h2 class="author">${data.author}</h2>
         <p class="genre">${data.genre}</p>
         <p> Je hebt dit boek geselecteerd</p>
+     </div>
+     <div id="relatedLoading">
+     <h2> Suggesties worden geladen... </h2>
      </div>
     `
     document.getElementsByClassName('books')[0].innerHTML = markup
