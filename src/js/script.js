@@ -1,9 +1,12 @@
-function findLongestWord(str) {
-  const stringArray = str.split(' ')
-  const orderedArray = stringArray.sort((a, b) => {
-    return a.length < b.length
+function findLongestWord(array) {
+  let orderedArray = array.sort((a, b) => {
+    return a.length - b.length
   })
-  return orderedArray[0]
+  console.log(orderedArray)
+  return [
+    orderedArray[orderedArray.length - 1],
+    orderedArray[orderedArray.length - 2]
+  ]
 }
 
 const request = {
@@ -27,15 +30,19 @@ const request = {
     const api = new API({
       key: '1e19898c87464e239192c8bfe422f280'
     })
-    console.log(book)
-    const author = book.author
     const genre = book.genre
-    const searchWord = findLongestWord(book.title)
+    const stringArray = book.title.split(' ')
+    const searchWord = findLongestWord(stringArray)
+
     let query = ''
     if (!genre || genre === 'Genre onbekend') {
-      query = searchWord
+      if (stringArray.length === 1) {
+        query = book.title
+      } else {
+        query = searchWord[0] + ' ' + searchWord[1]
+      }
     } else {
-      query = genre
+      query = genre + ' ' + searchWord[0]
     }
     const amount = 5
     console.log(query)
@@ -75,10 +82,14 @@ const dataProcessor = {
   createObject: data => {
     // format each object
     const object = {
-      frabl: data.frabl ? data.frabl._text : '1F603CA720F360A0',
+      frabl:
+        data.frabl && data.frabl._text ? data.frabl._text : '1F603CA720F360A0',
       author: data.authors
-        ? data.authors['main-author']._text
+        ? data.authors['main-author']
+          ? data.authors['main-author']._text
+          : 'Auteur onbekend'
         : 'Auteur onbekend',
+
       title: data.titles
         ? data.titles['short-title']
           ? data.titles['short-title']._text
@@ -175,17 +186,21 @@ const render = {
 }
 const router = {
   initRoutes: () => {
-    routie('home', () => {
-      document.getElementsByClassName('books')[0].innerHTML = ''
-      render.loading()
-      request.search('stad', 15)
+    routie({
+      '': function() {
+        routie('home')
+      },
+      home: function() {
+        document.getElementsByClassName('books')[0].innerHTML = ''
+        render.loading()
+        request.search('stad', 15)
+      },
+      ':frabl': frabl => {
+        document.getElementsByClassName('books')[0].innerHTML = ''
+        render.loading()
+        request.detail(frabl)
+      }
     })
-    routie(':frabl', frabl => {
-      document.getElementsByClassName('books')[0].innerHTML = ''
-      render.loading()
-      request.detail(frabl)
-    })
-    routie('home')
   }
 }
 
