@@ -164,6 +164,7 @@ const render = {
         <p> Je hebt dit boek geselecteerd</p>
      </div>
      <div id="relatedLoading">
+     <h1> 📖 </h1>
      <h2> Suggesties worden geladen... </h2>
      </div>
     `
@@ -181,6 +182,7 @@ const render = {
         <h2>
             ${data.title}
         </h2>
+        <img src="${data.coverImg}"></img>
         <p class="author">${data.author}</p>
         <p class="genre">${data.genre}</p>
         <a href="#${data.frabl}">Gerelateerd</a>
