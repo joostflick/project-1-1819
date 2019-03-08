@@ -12,8 +12,8 @@ Download this repo and run npm install
 
 ## TO DO
 
-[x] Show related books
-[x] Search for books
-[x] Perceived performance (loading state)
-[] Visited list display
-[] Better data cleaning
+- [x] Show related books
+- [x] Search for books
+- [x] Perceived performance (loading state)
+- [] Visited list display
+- [] Better data cleaning
