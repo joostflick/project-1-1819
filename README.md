@@ -15,5 +15,5 @@ Download this repo and run npm install
 - [x] Show related books
 - [x] Search for books
 - [x] Perceived performance (loading state)
-- [] Visited list display
-- [] Better data cleaning
+- [ ] Visited list display
+- [ ] Better data cleaning
