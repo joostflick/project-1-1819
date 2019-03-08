@@ -107,7 +107,7 @@ const dataProcessor = {
       coverImg:
         data.coverimages && data.coverimages.coverimage[0]
           ? data.coverimages.coverimage[0]._text
-          : 'https://www.freeiconspng.com/uploads/no-image-icon-6.png'
+          : 'https://cover.biblion.nl/coverlist.dll?doctype=morebutton&bibliotheek=oba&style=0&ppn=052950786&isbn=&lid=&aut=&ti=&size=70'
     }
     return object
   },
