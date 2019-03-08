@@ -4,10 +4,12 @@
 
 Suggesties voor andere boeken wanneer een boek bekeken wordt.
 
+Deze applicatie kan zoeken, gerelateerde boeken laten zien en een lijst van de boeken die bezocht zijn opslaan.
+
 ## TO DO
 
 [x] Show related books
 [x] Search for books
 [x] Perceived performance (loading state)
-[] Visited list
+[] Visited list display
 [] Better data cleaning
